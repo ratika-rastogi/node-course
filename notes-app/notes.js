@@ -1,16 +1,10 @@
 import fs from 'node:fs'
 import chalk from 'chalk'
 
-export  function getNotes(){
-    return 'My notes......'
-}
-
 export  function addNote(title, body){
     const notes = loadNotes()
-    const duplicateNotes = notes.filter( function(note){
-        return note.title === title
-    })
-    if(duplicateNotes.length === 0){
+    const duplicateNotes = notes.find( (note) => note.title === title)
+    if(!duplicateNotes){
         notes.push({
             title:title,
             body:body
@@ -25,31 +19,42 @@ export  function addNote(title, body){
 
 export function removeNote(noteTitle){
     const notes = loadNotes()
-    const notesToKeep = notes.filter(function(note){
-        return note.title!==noteTitle
-    })
+    const notesToKeep = notes.filter( (note) =>  note.title!==noteTitle)
     if(notesToKeep.length === notes.length){
         console.log(chalk.bgRed("Note not found!!!!"))
     }else{
         saveNotes(notesToKeep)
         console.log(chalk.bgGreen('Note '+noteTitle+' deleted successfully!!!!'))
     }
-    // console.log(chalk.cyan("Notes without title: "+ JSON.stringify(notesToKeep)))
-    // console.log(chalk.magenta("Notes with title: "+ JSON.stringify(notes)))
-    // console.log(chalk.yellowBright("Log with title: "+ noteTitle +" removed"))
 }
 
-const saveNotes= function(notes){
+export function listNotes(){
+    const notes = loadNotes()
+    console.log(chalk.bgCyanBright("Your Notes-"))
+    let i=0
+    notes.forEach((note) => console.log("<"+(++i)+">"+note.title+"\n"));
+}
+
+export function readNote(noteTitle){
+    const notes = loadNotes()
+    const note = notes.find((note) => note.title === noteTitle)
+    if(note){
+        console.log(chalk.bgGreen.bold(note.title)+"-"+ note.body)
+    }else{
+        console.log(chalk.red.bold.underline(noteTitle+' not found'))
+    }
+}
+
+const saveNotes= (notes) => {
     const notesData = JSON.stringify(notes)
     fs.writeFileSync('notes.json',notesData)
 }
 
-const loadNotes = function(){
+const loadNotes = () =>{
     try{
         const notesBuffer = fs.readFileSync('notes.json')
-    return JSON.parse(notesBuffer.toString())
+         return JSON.parse(notesBuffer.toString())
     }catch(e){
-        console.log("error:"+e)
         return []
     }
 }

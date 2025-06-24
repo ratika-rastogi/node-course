@@ -1,5 +1,4 @@
-import chalk from 'chalk'
-import {addNote,getNotes, removeNote} from './notes.js'
+import {addNote, removeNote,listNotes,readNote} from './notes.js'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers';
 
@@ -41,10 +40,28 @@ yargs(hideBin(process.argv))
         }
     ).argv  
 
-yargs(hideBin(process.argv)).command('list', 'Lists the notes', {}, () => {
-   console.log("hiiii list the notes")
-  }).argv  
+yargs(hideBin(process.argv))
+    .command(
+        'list', 
+        'Lists the notes', 
+        {}, 
+        () => {
+            listNotes()
+        }
+    ).argv  
 
-yargs(hideBin(process.argv)).command('read', 'Reads a note', {}, () => {
-   console.log("hiiii note is read")
-  }).argv    
+yargs(hideBin(process.argv))
+    .command(
+        'read', 
+        'Reads a note', 
+        {
+            title:{
+                describe:'Enter the note to be read',
+                demandOption:true,
+                type:'string'
+            }
+        },
+        (argv) => {
+            readNote(argv.title)
+        }
+    ).argv    
