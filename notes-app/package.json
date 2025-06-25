@@ -12,5 +12,10 @@
     "chalk": "^5.4.1",
     "validator": "^13.15.15",
     "yargs": "^18.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "prettier": "^3.6.1",
+    "prettier-eslint": "^16.4.2"
   }
 }
