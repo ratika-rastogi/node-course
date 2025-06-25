@@ -1,6 +1,5 @@
 import fs from "node:fs";
 import chalk from "chalk";
-import eslint from "prettier-eslint";
 
 export function addNote(title, body) {
   const notes = loadNotes();
@@ -8,7 +7,7 @@ export function addNote(title, body) {
   if (!duplicateNotes) {
     notes.push({
       title: title,
-      body: body,
+      body: body
     });
     saveNotes(notes);
     console.log(chalk.green("Data Saved successfully"));
@@ -25,7 +24,7 @@ export function removeNote(noteTitle) {
   } else {
     saveNotes(notesToKeep);
     console.log(
-      chalk.bgGreen("Note " + noteTitle + " deleted successfully!!!!"),
+      chalk.bgGreen("Note " + noteTitle + " deleted successfully!!!!")
     );
   }
 }

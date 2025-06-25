@@ -1,1 +1,9 @@
-[{"title":"Food","body":"pizza,noodles"},{"title":"K Dramas","body":"Crash Landing on You, My Demon, Business Proposal"},{"title":"C Dramas","body":"Hidden Love, First Frost"},{"title":"T Dramas","body":"Hidden Love, First Frost"}]
+[
+    { "title": "Food", "body": "pizza,noodles" },
+    {
+        "title": "K Dramas",
+        "body": "Crash Landing on You, My Demon, Business Proposal"
+    },
+    { "title": "C Dramas", "body": "Hidden Love, First Frost" },
+    { "title": "T Dramas", "body": "Hidden Love, First Frost" }
+]
