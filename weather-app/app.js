@@ -1,37 +1,26 @@
-import request from 'postman-request'
+import { geocode } from './utils/geocode.js'
+import { forecast } from './utils/forecast.js'
 import chalk from 'chalk'
-const url = 'http://api.weatherapi.com/v1/current.json?key=57b8430cc76f493e9ae52658252606&q=26.860556%2080.915833&aqi=yes'
 
-// request({url: url , json:true}, (error, response) => {
-//     //const data = JSON.parse(response.body)
-//    // console.log(data.current )
-//    // console.log(response.body)
-//    const res =response.body
-//    try{
-//     if(res.error){
-//         console.log('Unable to find location')
-//     }else{
-//         const data = res.current
-//         //console.log(response.body)
-//         console.log(chalk.bgCyan('It is '+ data.temp_c + " The probability of rain is "+data.precip_in))
-//     }
-    
-//    }catch (error){
-//      console.log("Unable to reach api: "+error)
-//    }  
-// })
 
-const geocodingUrl = 'https://api.mapbox.com/search/geocode/v6/forward?q=Sambhal&access_token=pk.eyJ1IjoicmF0aWthcmFzdG9naTEiLCJhIjoiY21jZDR4Z2JoMGVtMjJpczN1OWRkNTQ5ayJ9.qM1aWyHM-KC0r3cngw8RpQ&limit=1'
-request({url : geocodingUrl , json:true}, (error,response) => {
-    try{
-        if(error){
-            console.log('Unable to connect to the api')
-        } else if( response.body.error_code ){
-            console.log("Unable to find location for the given data try again......")
-        } else{
-            console.log(response.body.features[0].properties.coordinates.longitude)
-        }
-    }catch(error){
-        console.log('Unexpected error occurred'+error)
+const location = process.argv[2]
+if(location){
+    console.log("location input parameter"+location)
+    geocode(location , (geocodeError,geocodeData) => {
+    if(geocodeError){
+       return  console.log(chalk.red('Error:'), chalk.red(error))
     }
+    forecast(geocodeData.longitude,geocodeData.latitude, (forecastError,forecastData) => {
+        if(forecastError){
+            return console.log("Forecast Error:",error)
+        }
+        console.log(chalk.bgGreen('In '+ forecastData?.location.name +' it is '+ forecastData?.current.temp_c + " degree celsius. The probability of rain is "+forecastData?.current.precip_in))    
+    })
+    
 })
+}else{
+    console.log('Please enter a valid input')
+}
+
+
+
