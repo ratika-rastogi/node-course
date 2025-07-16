@@ -8,7 +8,7 @@ export function forecast (latitude,longitude,callback){
         } else if (error){
             callback('Unable to find location',undefined)
         } else{
-            callback(undefined,'It is '+ body?.current.temp_c + " degree celsius. The probability of rain is "+body?.current.precip_in)
+            callback(undefined,'Weather condition- '+body?.current.condition.text+'. It is '+ body?.current.temp_c + " degree celsius. The probability of rain is "+body?.current.precip_in)
         }
     })
 }
