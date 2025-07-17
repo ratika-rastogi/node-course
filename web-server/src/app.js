@@ -1,5 +1,4 @@
 import express from 'express'
-import chalk from 'chalk'
 import path from 'path';
 import { fileURLToPath } from 'url';
 import hbs from 'hbs';
@@ -70,8 +69,7 @@ app.get('/weather',(req,res) => {
             res.send({
                 location:place,
                 forecast:forecastData
-            })
-           // console.log(chalk.bgGreen()    
+            })   
         })    
     })
 
@@ -105,5 +103,5 @@ app.get('/*rr',(req,res) => {
     })
 })
 app.listen(3000,()=>{
-    console.log(chalk.bgGreenBright("Server is up an running on port 3000"))
+    console.log("Server is up an running on port 3000")
 })
