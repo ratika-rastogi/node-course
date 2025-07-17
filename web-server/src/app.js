@@ -8,6 +8,7 @@ const __filename = fileURLToPath(import.meta.url); // get the resolved path to t
 const __dirname = path.dirname(__filename); // get the name of the directory
 
 const app = express()
+const port = process.env.PORT || 3000
 
 //Define paths for Express Config
 const publicDir=path.join(__dirname,'../public')
@@ -102,6 +103,6 @@ app.get('/*rr',(req,res) => {
         errorText:'The page does not exist. Please specify a correct url to load'
     })
 })
-app.listen(3000,()=>{
-    console.log("Server is up an running on port 3000")
+app.listen(port,()=>{
+    console.log("Server is up an running on port",port)
 })
