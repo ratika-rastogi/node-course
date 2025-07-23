@@ -1,15 +1,28 @@
-const doWorkPromise = new Promise((resolve,reject) => {
-    setTimeout(()=>{
-        resolve(true)
-        //reject('Shit!!!')
-        resolve(false)
-        //reject('Noooo Shit!!!')
+const add = (a,b) =>{
+    return new Promise((resolve,reject) => {
+        setTimeout(()=>{
+            resolve(a+b)
+        },2000)
+    })
+}
 
-    },2000)
-})
+// add(1,2).then((res)=>{
+//     console.log(res)
+//     add(res,5).then((result)=>{
+//         console.log(result)
+//     }).catch((e)=>{
+//         console.log(e)
+//     })
+// }).catch((e)=>{
+//     console.log(e)
+// })
 
-doWorkPromise.then((result)=>{
-    console.log('Success',result)
-}).catch((error)=>{
-    console.log('Error',error)
+
+add(2,2).then((sum)=>{
+    console.log(sum)
+    return add(sum,6)
+}).then((sum)=>{
+    console.log(sum)
+}).catch((E)=>{
+    console.log(E)
 })
