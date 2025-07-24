@@ -3,13 +3,26 @@ import { User } from '../src/db/models/users.js'
 connect()
 
 
-User.findByIdAndUpdate('687f53c567bb1a3ab4bf5760',{
-    password:'Shashank123'
-}).then((res)=>{
+// User.findByIdAndUpdate('687f53c567bb1a3ab4bf5760',{
+//     password:'Shashank123'
+// }).then((res)=>{
+//     console.log(res)
+//     return User.countDocuments({age:0})
+// }).then((count)=>{
+//     console.log(count)
+// }).catch((e)=>{
+//     console.log(e)
+// })
+
+const updateAgeAndCount = async(id,age) => {
+    await User.findByIdAndUpdate(id,{ age })
+    const count = await User.countDocuments( { age }) 
+    return count
+}
+
+
+updateAgeAndCount('687f53c567bb1a3ab4bf5760',2).then((res)=>{
     console.log(res)
-    return User.countDocuments({age:0})
-}).then((count)=>{
-    console.log(count)
 }).catch((e)=>{
     console.log(e)
 })
