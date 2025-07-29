@@ -16,23 +16,33 @@ taskRouter.post('/tasks',auth ,async(req,res) => {
     }
 })
 
+
+// GET /tasks?completed=true
+// GET /tasks?limit=10&skip=10
+// GET /tasks?sort=createdAt:desc
 taskRouter.get('/tasks',auth,async (req,res) => {
     try{
         const match = {}
+        const sort = {}
         if(req.query.completed){
             match.completed = req.query.completed === 'true'
+        }
+        if(req.query.sort){
+            const parts = req.query.sort.split(':')
+            sort[parts[0]] = parts[1]==='desc'? -1:1
         }
         await req.user.populate({
             path:'tasks',
             match,
             options:{
                 limit: parseInt(req.query.limit),
-                skip:parseInt(req.query.skip)
+                skip:parseInt(req.query.skip),
+                sort
             }
         })
         res.send(req.user.tasks)
     }catch(e){
-        res.status(500).send('Task Not found!!1')
+        res.status(500).send('Task Not found!!')
     }
 })
 
