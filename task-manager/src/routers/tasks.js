@@ -16,12 +16,20 @@ taskRouter.post('/tasks',auth ,async(req,res) => {
     }
 })
 
-taskRouter.get('/tasks',auth,(req,res) => {
-    Task.find({owner:req.user._id}).then((result) => {
-        res.send(result)
-    }).catch((error) => {
-        res.status(500).send(error)
-    })
+taskRouter.get('/tasks',auth,async (req,res) => {
+    try{
+        const match = {}
+        if(req.query.completed){
+            match.completed = req.query.completed === 'true'
+        }
+        await req.user.populate({
+            path:'tasks',
+            match
+        })
+        res.send(req.user.tasks)
+    }catch(e){
+        res.status(500).send('Task Not found!!1')
+    }
 })
 
 taskRouter.get('/tasks/:id',auth,async(req,res) => {
