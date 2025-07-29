@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 
-export const Task = mongoose.model('Task',{
+
+const taskSchema = new mongoose.Schema({
     description:{
         type:String,
         trim:true,
@@ -15,4 +16,7 @@ export const Task = mongoose.model('Task',{
         required:true,
         ref:'User'
     }
+},{
+    timestamps:true
 })
+export const Task = mongoose.model('Task',taskSchema)
