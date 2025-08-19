@@ -1,6 +1,9 @@
 import express from 'express'
 import { User } from '../db/models/users.js'
 import {auth} from '../middleware/auth.js'
+import multer from 'multer'
+import sharp from 'sharp'
+
 export const userRouter = new express.Router()
 
 userRouter.post('/users' ,async (req,res) => {
@@ -49,6 +52,28 @@ userRouter.post('/users/logoutAll',auth,async(req,res)=>{
     }
 })
 
+const upload = multer({
+    limits:{
+        fileSize:1000000
+    },
+    fileFilter(req,file,cb){
+        if(!file.originalname.match(/\.(jpg|jpeg|png)$/)){
+            return cb(new Error('Please upload an image file only'))
+        }
+        cb(undefined,true)
+    },
+})
+
+userRouter.post('/users/me/avatar',auth,upload.single('avatar'), async (req,res)=>{
+    
+    const buffer = await sharp(req.file.buffer).resize({width:250,height:250}).png().toBuffer()
+    req.user.avatar=buffer
+    await req.user.save()
+    res.send('File uploaded successfully')
+},(error,req,res,next)=>{
+    res.status(400).send({error:error.message})
+})
+
 userRouter.get('/users/me',auth,async (req,res) => {
     console.log('Inside read profile',req.token)
     res.send(req.user)
@@ -78,5 +103,28 @@ userRouter.delete('/users/me',auth ,async (req,res)=>{
         res.send(req.user)
     }catch(e){
         res.status(500).send(e)
+    }
+})
+
+userRouter.delete('/users/me/avatar',auth ,async (req,res)=>{
+    try{
+        req.user.avatar= undefined
+        await req.user.save()
+        res.send({})
+    }catch(e){
+        res.status(500).send(e)
+    }
+})
+
+userRouter.get('/users/:id/avatar',async (req,res)=>{
+    try{
+        const user = await User.findById(req.params.id)
+        if(!user || !user.avatar){
+            throw new Error()
+        }        
+        res.set('Content-Type','image/png')
+        res.send(user.avatar)
+    }catch(e){
+        res.status(404).send(e)
     }
 })
