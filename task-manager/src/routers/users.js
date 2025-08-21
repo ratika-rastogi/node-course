@@ -3,13 +3,14 @@ import { User } from '../db/models/users.js'
 import {auth} from '../middleware/auth.js'
 import multer from 'multer'
 import sharp from 'sharp'
-
+import {sendWelcomeEmail,sendCancellationEmail } from '../emails/account.js'
 export const userRouter = new express.Router()
 
 userRouter.post('/users' ,async (req,res) => {
     const user = new User(req.body)
     try{
         await user.save()
+        sendWelcomeEmail(user.email,user.name)
         const token = await user.getAuthenticationToken()
         res.status(201).send({user,token})
     }catch(error){
@@ -100,6 +101,7 @@ userRouter.patch('/users/me',auth ,async (req,res) => {
 userRouter.delete('/users/me',auth ,async (req,res)=>{
     try{
         await req.user.deleteOne()
+        sendCancellationEmail(req.user.email,req.user.name)
         res.send(req.user)
     }catch(e){
         res.status(500).send(e)
