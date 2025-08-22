@@ -2,4 +2,22 @@
 - It includes a playground app for trying out some basic concepts in Node.js.
 - It has a weather app for fetching the weather information of a location (deployed on Render - https://node-course-od7d.onrender.com/)
 - It has a web server app to serve the data from the Browser
-- It has a task-manager app for handling all the CRUD operations on MongoDB (deployed on Render -https://task-manager-api-x60o.onrender.com)
+- It has a task-manager app for handling all the CRUD operations on MongoDB (deployed on Render - {{url}} - https://task-manager-api-x60o.onrender.com/)
+  - Routes included in project ->
+    - **POST Requests**
+    - {{url}}/users -> Create User
+    - {{url}}/tasks -> Create Task
+    - {{url}}/users/login -> Login User
+    - {{url}}/users/logout -> Logout User
+    - {{url}}/users/logoutAll -> Logout user from all devices
+    - {{url}}/users/me/avatar -> Upload Avatar
+    - **GET Requests**
+    - {{url}}/users/me -> Get User
+    - {{url}}/tasks?sort=createdAt:desc -> Get Tasks of the logged in User
+    - **PATCH Requests**
+    - {{url}}/users/me -> Update User
+    - {{url}}/tasks/<TASK_ID> -> Update Task
+    - **DELETE Requests**
+    - {{url}}/users/me -> Delete User
+    - {{url}}/users/me/avatar -> Delete Avatar
+    - {{url}}/tasks/<TASK_ID> -> Delete Task
