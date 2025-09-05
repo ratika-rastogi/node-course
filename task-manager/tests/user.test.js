@@ -1,23 +1,10 @@
 import request from 'supertest'
 import app from '../src/app.js'
 import { User } from '../src/db/models/users.js'
-import mongoose from 'mongoose'
-import jwt from 'jsonwebtoken'
-
-const userOneId = new mongoose.Types.ObjectId()
-const userOne={
-    _id:userOneId,
-    name:'Test User',
-    email:'test@example.com',
-    password:'passCode!!',
-    tokens:[{
-        token: jwt.sign({_id:userOneId},process.env.JWT_SECRET)
-    }]
-}
+import { userOne, userOneId , setupDatabase } from './fixtures/db.js'
 
 beforeEach(async ()=>{
-    await User.deleteMany()
-    await new User(userOne).save()
+    await setupDatabase()
 })
 
 test('should sign up a new user', async () =>{
