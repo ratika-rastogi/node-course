@@ -2,7 +2,12 @@ import request from 'supertest'
 import app from '../src/app.js'
 import { Task } from '../src/db/models/tasks.js'
 
-import { userOne, userOneId ,userTwo, TaskOne,setupDatabase } from './fixtures/db.js'
+import { 
+    userOne, 
+    userOneId ,
+    userTwo, 
+    TaskOne,
+    setupDatabase } from './fixtures/db.js'
 
 beforeEach(async ()=>{
     await setupDatabase()
