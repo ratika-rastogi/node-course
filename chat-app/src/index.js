@@ -3,7 +3,9 @@ import path from 'path';
 import http from 'http';
 import { fileURLToPath } from 'url';
 import { Server } from 'socket.io';
-import {Filter} from 'bad-words'
+import { Filter } from 'bad-words'
+import { generateMessage , generateLocationMessage } from './utils/messages.js'
+
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory
 
@@ -28,25 +30,24 @@ app.get('/index.html', (req,res) => {
 io.on('connection',(socket)=>{
     console.log('Websocket Connection')
 
-    socket.emit('message','Welcome to you new chat')
-    socket.broadcast.emit('message','New user has joined')
-
+    socket.emit('message',generateMessage('Welcome!'))
+    socket.broadcast.emit('message',generateMessage('A new user has joined'))    
     socket.on('sendMessage',(msg,cb)=>{
         const filter = new Filter()
         if(filter.isProfane(msg)){
             return cb('Profanity is not acceptable!!!')
         }
-        io.emit('message',msg)
+        io.emit('message',generateMessage(msg))
         cb(' \nMessage delivered successfully at server')
     })
 
     socket.on('sendLocation',({latitude,longitude},cb)=>{
-        io.emit('message',`https://google.com/maps?q=${latitude},${longitude}` )
+        io.emit('locationMessage',generateLocationMessage(`https://google.com/maps?q=${latitude},${longitude}`) )
         cb()
     })
 
     socket.on('disconnect',()=>{
-        io.emit('message','A User has left')
+        io.emit('message',generateMessage('A User has left'))
     })
 })
 

@@ -1,13 +1,33 @@
 const socket=io()
-socket.on('message',(msg)=>{
-    console.log('Message from server- ' + msg)
+
+//Elements
+const $messageForm = document.querySelector('#message-form')
+const $messageFormInput = $messageForm.querySelector('input')
+const $messageFormButton = $messageForm.querySelector('button')
+const $sendLocationButton = document.querySelector('#send-location')
+const $messages = document.querySelector('#messages')
+
+//Templates
+const messageTemplate = document.querySelector('#message-template').innerHTML
+const locationMessageTemplate = document.querySelector('#locationMessage-template').innerHTML
+
+socket.on('message',(message)=>{
+    console.log(message)
+    const html = Mustache.render(messageTemplate,{
+        'message':message.text,
+        'createdAt':moment(message.createdAt).format('h:mm:ss A')
+    })
+    $messages.insertAdjacentHTML('beforeend',html)
 })
 
-const $messageForm =document.querySelector('#message-form')
-const $messageFormInput =$messageForm.querySelector('input')
-const $messageFormButton =$messageForm.querySelector('button')
-
-const $sendLocationButton=document.querySelector('#sendLocation')
+socket.on('locationMessage',(message)=>{
+    console.log(message)
+    const html =Mustache.render(locationMessageTemplate,{
+        'url': message.url,
+        'createdAt':moment(message.createdAt).format('h:mm:ss A')
+    })  
+    $messages.insertAdjacentHTML('beforeend',html)  
+})
 
 $messageForm.addEventListener('submit',(e)=>{
     e.preventDefault()
