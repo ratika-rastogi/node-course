@@ -18,6 +18,9 @@
     - {{url}}/users/me -> Update User
     - {{url}}/tasks/<TASK_ID> -> Update Task
     - **DELETE Requests**
-    - {{url}}/users/me -> Delete User
+    - {{url}}/users/me -> Delete Use r
     - {{url}}/users/me/avatar -> Delete Avatar
     - {{url}}/tasks/<TASK_ID> -> Delete Task
+
+- It includes a chat application, where users can share/messages or their location in a chat room (deployed on Render- https://node-course-1.onrender.com/)
+    
